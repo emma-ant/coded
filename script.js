@@ -1,6 +1,6 @@
 const API_BASE = 'https://api-hackathon.codedematrixtech.com';
 const MERCHANT_SLUG = 'mensah';
-const DEFAULT_WHATSAPP_NUMBER = '0264454344';
+const DEFAULT_WHATSAPP_NUMBER = '233264454344';
 const IMAGE_BASE = API_BASE;
 let allItems = [];
 let selectedProduct = null;
@@ -70,7 +70,7 @@ async function createBasket(payload) {
 }
 
 function whatsappNumber() {
-  return DEFAULT_WHATSAPP_NUMBER;
+  return DEFAULT_WHATSAPP_NUMBER.replace(/\D/g, '');
 }
 
 function initGlobalWhatsApp() {
