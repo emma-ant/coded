@@ -73,10 +73,14 @@ function whatsappNumber() {
   return DEFAULT_WHATSAPP_NUMBER.replace(/\D/g, '');
 }
 
+function buildWhatsAppUrl(message) {
+  return `https://wa.me/${whatsappNumber()}?text=${encodeURIComponent(message)}`;
+}
+
 function initGlobalWhatsApp() {
   const btn = document.getElementById('floatingWhatsapp');
   if (!btn) return;
-  btn.href = `https://wa.me/${whatsappNumber()}?text=${encodeURIComponent('Hello Mensah, I would like to inquire about your collection.')}`;
+  btn.href = buildWhatsAppUrl('Hello Mensah, I would like to inquire about your collection.');
 }
 
 function renderSkeletonCards(container, count = 4) {
@@ -406,8 +410,15 @@ function handleBespokeSubmit(event) {
     return;
   }
 
-  const message = `Hello Mensah,%0A%0AI would like to request a bespoke consultation.%0A%0AName:%20${encodeURIComponent(name)}%0APhone:%20${encodeURIComponent(phone)}%0APreferred%20fit:%20${encodeURIComponent(fit)}%0ANotes:%20${encodeURIComponent(notes || 'None')}`;
-  window.open(`https://wa.me/${whatsappNumber()}?text=${message}`, '_blank');
+  const message = `Hello Mensah.
+
+I would like to request a bespoke consultation.
+
+Name: ${name}
+Phone: ${phone}
+Preferred fit: ${fit}
+Notes: ${notes || 'None'}`;
+  window.open(buildWhatsAppUrl(message), '_blank');
 }
 
 function handleAddToCart() {
@@ -538,8 +549,26 @@ function handleSubmitCustomOrder() {
 function handleConfirmCustomOrder() {
   const data = customSizingState.data;
   const productText = selectedProduct ? `${selectedProduct.name}` : 'Custom tailoring request';
-  const message = `Hello Mensah,%0A%0AI would like to request a custom order.%0A%0AProduct:%20${encodeURIComponent(productText)}%0A%0AChest:%20${encodeURIComponent(data.chest)}%20cm%0AWaist:%20${encodeURIComponent(data.waist)}%20cm%0AHips:%20${encodeURIComponent(data.hips)}%20cm%0AShoulder:%20${encodeURIComponent(data.shoulder)}%20cm%0ASleeve:%20${encodeURIComponent(data.sleeve)}%20cm%0AInseam:%20${encodeURIComponent(data.inseam)}%20cm%0AHeight:%20${encodeURIComponent(data.height || 'N/A')}%0AWeight:%20${encodeURIComponent(data.weight || 'N/A')}%0AFit%20style:%20${encodeURIComponent(data.fitStyle)}%0AFabric:%20${encodeURIComponent(data.fabric || 'N/A')}%0ANotes:%20${encodeURIComponent(data.notes || 'None')}%0A%0ATailoring%20fee%20will%20be%20confirmed%20via%20WhatsApp.`;
-  window.open(`https://wa.me/${whatsappNumber()}?text=${message}`, '_blank');
+  const message = `Hello Mensah.
+
+I would like to request a custom order.
+
+Product: ${productText}
+
+Chest: ${data.chest} cm
+Waist: ${data.waist} cm
+Hips: ${data.hips} cm
+Shoulder: ${data.shoulder} cm
+Sleeve: ${data.sleeve} cm
+Inseam: ${data.inseam} cm
+Height: ${data.height || 'N/A'}
+Weight: ${data.weight || 'N/A'}
+Fit style: ${data.fitStyle}
+Fabric: ${data.fabric || 'N/A'}
+Notes: ${data.notes || 'None'}
+
+Tailoring fee will be confirmed via WhatsApp.`;
+  window.open(buildWhatsAppUrl(message), '_blank');
   alert('Your request has been prepared. Mensah will reach out on WhatsApp shortly.');
   closeModal();
 }
@@ -673,7 +702,7 @@ async function handleCheckoutSubmit(event) {
   if (note) messageLines.push('', `Notes: ${note}`);
   messageLines.push('', 'Please confirm the delivery and final pricing via WhatsApp.');
 
-  window.open(`https://wa.me/${whatsappNumber()}?text=${encodeURIComponent(messageLines.join('%0A'))}`, '_blank');
+  window.open(buildWhatsAppUrl(messageLines.join('\n')), '_blank');
   saveCart([]);
   renderCartSummary();
   alert('Your order has been sent! We will confirm details and delivery shortly.');
