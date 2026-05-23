@@ -31,17 +31,10 @@
           <p>Mensah blends precision cut tailoring with modern luxury for the discerning gentleman. Discover our curated ready-to-wear collection or design your own bespoke fit.</p>
           <div class="hero-actions">
             <a href="shop.html" class="button button-primary">Shop the Collection</a>
-            <a href="#bespoke" class="button button-secondary">Custom Sizing</a>
+            <a href="#bespoke" class="button button-secondary">Request Custom</a>
           </div>
         </div>
-        <div class="hero-visual">
-          <div class="hero-card">
-            <img src="image.png" alt="Mensah wordmark" class="hero-logo" />
-            <div class="hero-stat">
-              <span>Minimal, tailored silhouettes</span>
-            </div>
-          </div>
-        </div>
+        <div class="hero-visual"></div>
       </section>
 
       <section id="collections" class="section-block">
@@ -90,8 +83,8 @@
       <section id="bespoke" class="section-block split-panel bespoke-panel">
         <div class="split-copy">
           <p class="section-label">Bespoke</p>
-          <h2>Custom sizing, delivered through WhatsApp.</h2>
-          <p>Complete your measurements and receive a personal consultation from the Mensah tailoring team.</p>
+          <h2>Custom request, delivered through WhatsApp.</h2>
+          <p>Submit your bespoke request and receive a personal consultation from the Mensah tailoring team.</p>
         </div>
         <div class="split-form">
           <form id="bespokeForm" class="bespoke-form">
@@ -122,6 +115,82 @@
         <a href="https://www.google.com/maps/search/?api=1&query=Mensah+Tailoring" target="_blank" rel="noreferrer">Find us</a>
       </div>
     </footer>
+  </div>
+
+  <div class="modal" id="productModal" aria-hidden="true">
+    <div class="modal-panel">
+      <button class="modal-close" id="closeModal" aria-label="Close product detail">×</button>
+      <div class="modal-grid">
+        <div class="modal-image-panel">
+          <img id="modalImage" src="" alt="Product image" />
+          <div class="image-thumbs" id="modalThumbs"></div>
+        </div>
+        <div class="modal-details">
+          <p class="section-label" id="modalCategory">Ready-to-Wear</p>
+          <h2 id="modalTitle"></h2>
+          <p class="modal-price" id="modalPrice"></p>
+          <p class="modal-copy" id="modalCopy"></p>
+          <p class="stock-status" id="modalStock"></p>
+
+          <div class="form-group">
+            <label for="productSizeSelect">Size</label>
+            <select id="productSizeSelect"></select>
+          </div>
+
+          <div class="button-row">
+            <button class="button button-primary" id="addToCartBtn">Add to Cart</button>
+            <button class="button button-secondary" id="orderCustomBtn">Order Custom Size</button>
+          </div>
+
+          <div class="sizing-flow hidden" id="sizingFlow">
+            <div class="sizing-step" id="sizingStep1">
+              <h3>Step 1 — Measurements</h3>
+              <div class="form-grid">
+                <div class="form-group"><label for="measureChest">Chest (cm)</label><input id="measureChest" type="number" min="0" /></div>
+                <div class="form-group"><label for="measureWaist">Waist (cm)</label><input id="measureWaist" type="number" min="0" /></div>
+                <div class="form-group"><label for="measureHips">Hips (cm)</label><input id="measureHips" type="number" min="0" /></div>
+                <div class="form-group"><label for="measureShoulder">Shoulder Width (cm)</label><input id="measureShoulder" type="number" min="0" /></div>
+                <div class="form-group"><label for="measureSleeve">Sleeve Length (cm)</label><input id="measureSleeve" type="number" min="0" /></div>
+                <div class="form-group"><label for="measureInseam">Inseam (cm)</label><input id="measureInseam" type="number" min="0" /></div>
+                <div class="form-group"><label for="measureHeight">Height (cm)</label><input id="measureHeight" type="number" min="0" /></div>
+                <div class="form-group"><label for="measureWeight">Weight (kg)</label><input id="measureWeight" type="number" min="0" /></div>
+                <div class="form-group full-width"><label for="measureNotes">Special Notes</label><textarea id="measureNotes" rows="3" placeholder="Relaxed fit, longer hem, roomier chest"></textarea></div>
+              </div>
+              <div class="button-row"><button class="button button-primary" id="toStep2">Continue</button></div>
+            </div>
+
+            <div class="sizing-step hidden" id="sizingStep2">
+              <h3>Step 2 — Fit Preferences</h3>
+              <div class="form-group"><label for="fitStyle">Fit style</label><select id="fitStyle"><option value="Slim">Slim</option><option value="Regular">Regular</option><option value="Relaxed">Relaxed</option></select></div>
+              <div class="form-group"><label for="customStyle">Custom style</label><select id="customStyle"><option value="">Select a custom style</option><option value="Minimal">Minimal</option><option value="Structured">Structured</option><option value="Modern">Modern</option><option value="Classic">Classic</option></select></div>
+              <div class="form-group"><label for="fabricPreference">Fabric preference</label><input id="fabricPreference" type="text" placeholder="Light wool, heavy cotton, linen" /></div>
+              <div class="form-group full-width"><label for="referencePhoto">Optional reference photo</label><input id="referencePhoto" type="file" accept="image/*" /></div>
+              <div class="image-preview" id="referencePreview"></div>
+              <div class="button-row">
+                <button class="button button-secondary" id="backToStep1">Back</button>
+                <button class="button button-primary" id="toStep3">Review Order</button>
+              </div>
+            </div>
+
+            <div class="sizing-step hidden" id="sizingStep3">
+              <h3>Step 3 — Order Review</h3>
+              <div class="review-summary" id="orderSummary"></div>
+              <p class="form-note">Pricing fee confirmed via WhatsApp after review with our tailoring team.</p>
+              <div class="button-row">
+                <button class="button button-secondary" id="backToStep2">Back</button>
+                <button class="button button-primary" id="submitCustomOrder">Submit Custom Order via WhatsApp</button>
+              </div>
+            </div>
+
+            <div class="sizing-step hidden" id="sizingStep4">
+              <h3>Step 4 — WhatsApp Handoff</h3>
+              <p>Your request has been compiled. Tap the button below to continue with Mensah on WhatsApp.</p>
+              <div class="button-row"><button class="button button-primary" id="confirmCustomOrder">Continue to WhatsApp</button></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <a class="whatsapp-float" id="floatingWhatsapp" href="#" target="_blank" rel="noreferrer" aria-label="Chat on WhatsApp">💬</a>

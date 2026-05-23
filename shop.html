@@ -124,8 +124,10 @@
             <div class="sizing-step hidden" id="sizingStep2">
               <h3>Step 2 — Fit Preferences</h3>
               <div class="form-group"><label for="fitStyle">Fit style</label><select id="fitStyle"><option value="Slim">Slim</option><option value="Regular">Regular</option><option value="Relaxed">Relaxed</option></select></div>
+              <div class="form-group"><label for="customStyle">Custom style</label><select id="customStyle"><option value="">Select a custom style</option><option value="Minimal">Minimal</option><option value="Structured">Structured</option><option value="Modern">Modern</option><option value="Classic">Classic</option></select></div>
               <div class="form-group"><label for="fabricPreference">Fabric preference</label><input id="fabricPreference" type="text" placeholder="Light wool, heavy cotton, linen" /></div>
               <div class="form-group full-width"><label for="referencePhoto">Optional reference photo</label><input id="referencePhoto" type="file" accept="image/*" /></div>
+              <div class="image-preview" id="referencePreview"></div>
               <div class="button-row">
                 <button class="button button-secondary" id="backToStep1">Back</button>
                 <button class="button button-primary" id="toStep3">Review Order</button>

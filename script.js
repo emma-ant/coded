@@ -77,6 +77,24 @@ function buildWhatsAppUrl(message) {
   return `https://wa.me/${whatsappNumber()}?text=${encodeURIComponent(message)}`;
 }
 
+async function uploadReferenceImage(file) {
+  if (!file) return null;
+  try {
+    const formData = new FormData();
+    formData.append('file', file);
+    const response = await fetch(`${API_BASE}/uploads`, {
+      method: 'POST',
+      body: formData,
+    });
+    if (!response.ok) return null;
+    const result = await response.json();
+    return result.url || result.file_url || result.image_url || null;
+  } catch (error) {
+    console.warn('Reference image upload failed', error);
+    return null;
+  }
+}
+
 function initGlobalWhatsApp() {
   const btn = document.getElementById('floatingWhatsapp');
   if (!btn) return;
@@ -122,7 +140,8 @@ function initHomePage() {
   fetchItems()
     .then((items) => {
       allItems = decorateItems(items);
-      renderFeaturedProducts(allItems.slice(0, 4));
+      const featured = allItems.slice(0, 4);
+      renderFeaturedProducts(featured);
     })
     .catch(() => {
       if (productGrid) {
@@ -134,6 +153,8 @@ function initHomePage() {
   if (bespokeForm) {
     bespokeForm.addEventListener('submit', handleBespokeSubmit);
   }
+
+  initPageInteractions();
 }
 
 function decorateItems(items) {
@@ -143,6 +164,10 @@ function decorateItems(items) {
     available_sizes: ['S', 'M', 'L', 'XL'],
   }));
 }
+
+let heroCarouselInterval = null;
+let heroCarouselIndex = 0;
+let heroCarouselItems = [];
 
 function renderFeaturedProducts(items) {
   const productGrid = document.getElementById('productGrid');
@@ -168,6 +193,78 @@ function renderFeaturedProducts(items) {
       if (item) openProductModal(item);
     });
   });
+}
+
+function renderHeroCarousel(items) {
+  heroCarouselItems = items || [];
+  const carousel = document.getElementById('heroCarousel');
+  if (!carousel) return;
+  const slideContainer = carousel.querySelector('.carousel-slides');
+  if (!slideContainer) return;
+
+  if (!heroCarouselItems.length) {
+    slideContainer.innerHTML = `<div class="carousel-slide active"><div class="carousel-overlay"><p class="eyebrow">Mensah</p><h3>Signature Tailoring</h3><p>Discover our most refined pieces in a rotating hero showcase.</p></div></div>`;
+    return;
+  }
+
+  slideContainer.innerHTML = heroCarouselItems
+    .map((item, index) => {
+      const backgroundImage = item.image_urls?.[0] ? `${IMAGE_BASE}${item.image_urls[0]}` : '';
+      return `<article class="carousel-slide${index === 0 ? ' active' : ''}" data-product-id="${item.id}" style="background-image: url('${backgroundImage}');">
+          <div class="carousel-overlay">
+            <span class="eyebrow">Featured</span>
+            <h3>${item.name}</h3>
+            <p>${item.description || 'Classic tailoring ready for you.'}</p>
+            <span class="price-tag">${formatPriceMinor(item.price_minor, item.currency)}</span>
+            <button type="button" class="button button-primary carousel-view-button" data-product-id="${item.id}">View</button>
+          </div>
+        </article>`;
+    })
+    .join('');
+
+  initHeroCarousel();
+  setHeroCarouselIndex(0);
+  startHeroCarouselTimer();
+}
+
+function initHeroCarousel() {
+  const carousel = document.getElementById('heroCarousel');
+  if (!carousel) return;
+
+  carousel.querySelectorAll('.carousel-view-button').forEach((button) => {
+    button.addEventListener('click', () => {
+      const id = button.dataset.productId;
+      const item = allItems.find((product) => product.id === id);
+      if (item) openProductModal(item);
+    });
+  });
+
+  carousel.querySelector('.carousel-prev')?.addEventListener('click', () => {
+    setHeroCarouselIndex(heroCarouselIndex - 1);
+    startHeroCarouselTimer();
+  });
+
+  carousel.querySelector('.carousel-next')?.addEventListener('click', () => {
+    setHeroCarouselIndex(heroCarouselIndex + 1);
+    startHeroCarouselTimer();
+  });
+}
+
+function setHeroCarouselIndex(index) {
+  if (!heroCarouselItems.length) return;
+  heroCarouselIndex = (index + heroCarouselItems.length) % heroCarouselItems.length;
+  document.querySelectorAll('#heroCarousel .carousel-slide').forEach((slide, slideIndex) => {
+    slide.classList.toggle('active', slideIndex === heroCarouselIndex);
+  });
+}
+
+function startHeroCarouselTimer() {
+  if (heroCarouselInterval) {
+    clearInterval(heroCarouselInterval);
+  }
+  heroCarouselInterval = setInterval(() => {
+    setHeroCarouselIndex(heroCarouselIndex + 1);
+  }, 6000);
 }
 
 function initShopPage() {
@@ -370,6 +467,14 @@ function openCustomSizingModal() {
     setSizingStep(1);
   }
 
+  const referencePhotoInput = document.getElementById('referencePhoto');
+  const referencePreview = document.getElementById('referencePreview');
+  if (referencePhotoInput) referencePhotoInput.value = '';
+  if (referencePreview) {
+    referencePreview.innerHTML = '';
+    referencePreview.classList.remove('visible');
+  }
+
   modal.classList.add('open');
   trapModalClose();
 }
@@ -481,8 +586,26 @@ function collectSizingData() {
     weight: document.getElementById('measureWeight')?.value.trim(),
     notes: document.getElementById('measureNotes')?.value.trim(),
     fitStyle: document.getElementById('fitStyle')?.value,
+    customStyle: document.getElementById('customStyle')?.value,
     fabric: document.getElementById('fabricPreference')?.value.trim(),
+    referencePhotoName: document.getElementById('referencePhoto')?.files?.[0]?.name || '',
   };
+}
+
+function handleReferencePhotoChange(event) {
+  const input = event.target;
+  const preview = document.getElementById('referencePreview');
+  const file = input?.files?.[0];
+
+  if (!preview) return;
+  if (file) {
+    const url = URL.createObjectURL(file);
+    preview.innerHTML = `<img src="${url}" alt="Reference preview" />`;
+    preview.classList.add('visible');
+  } else {
+    preview.innerHTML = '';
+    preview.classList.remove('visible');
+  }
 }
 
 function validateStep1(data) {
@@ -526,7 +649,9 @@ function renderSizingReview() {
     <p><strong>Height:</strong> ${data.height || 'N/A'}</p>
     <p><strong>Weight:</strong> ${data.weight || 'N/A'}</p>
     <p><strong>Fit style:</strong> ${data.fitStyle || 'Regular'}</p>
+    <p><strong>Custom style:</strong> ${data.customStyle || 'No preference'}</p>
     <p><strong>Fabric preference:</strong> ${data.fabric || 'No preference'}</p>
+    <p><strong>Reference image:</strong> ${data.referencePhotoName || 'None uploaded'}</p>
     <p><strong>Notes:</strong> ${data.notes || 'None'}</p>
   `;
 }
@@ -546,10 +671,21 @@ function handleSubmitCustomOrder() {
   setSizingStep(4);
 }
 
-function handleConfirmCustomOrder() {
+async function handleConfirmCustomOrder() {
   const data = customSizingState.data;
+  if (!data.fitStyle) {
+    alert('Please select your fit style.');
+    setSizingStep(2);
+    return;
+  }
+
+  const photoFile = document.getElementById('referencePhoto')?.files?.[0];
+  if (photoFile && !data.referenceImageUrl) {
+    data.referenceImageUrl = await uploadReferenceImage(photoFile);
+  }
+
   const productText = selectedProduct ? `${selectedProduct.name}` : 'Custom tailoring request';
-  const message = `Hello Mensah.
+  let message = `Hello Mensah.
 
 I would like to request a custom order.
 
@@ -564,10 +700,18 @@ Inseam: ${data.inseam} cm
 Height: ${data.height || 'N/A'}
 Weight: ${data.weight || 'N/A'}
 Fit style: ${data.fitStyle}
+Custom style: ${data.customStyle || 'No preference'}
 Fabric: ${data.fabric || 'N/A'}
-Notes: ${data.notes || 'None'}
+Notes: ${data.notes || 'None'}`;
 
-Tailoring fee will be confirmed via WhatsApp.`;
+  if (data.referenceImageUrl) {
+    message += `\nReference image: ${data.referenceImageUrl}`;
+  } else if (data.referencePhotoName) {
+    message += `\nReference image: ${data.referencePhotoName} (attached via form)`;
+  }
+
+  message += `\n\nTailoring fee will be confirmed via WhatsApp.`;
+
   window.open(buildWhatsAppUrl(message), '_blank');
   alert('Your request has been prepared. Mensah will reach out on WhatsApp shortly.');
   closeModal();
@@ -695,10 +839,14 @@ async function handleCheckoutSubmit(event) {
     console.warn('Basket creation failed:', error);
   }
 
+  const subtotal = cart.reduce((sum, item) => sum + item.price_minor * item.qty, 0);
   const messageLines = [`Hello Mensah,`, '', `I have placed an order via the Mensah cart.`, '', `Name: ${name}`, `Phone: ${phone}`, `Address: ${address}`, '', `Order details:`];
   cart.forEach((item) => {
-    messageLines.push(`- ${item.name} (${item.custom_fit ? 'Custom Fit' : `Size ${item.size}`}) x${item.qty}`);
+    const sizeText = item.custom_fit ? 'Custom Fit' : `Size ${item.size}`;
+    const lineTotal = formatPriceMinor(item.price_minor * item.qty, item.currency);
+    messageLines.push(`- ${item.name} (${sizeText}) x${item.qty} — ${lineTotal}`);
   });
+  messageLines.push('', `Final amount: ${formatPriceMinor(subtotal)}`);
   if (note) messageLines.push('', `Notes: ${note}`);
   messageLines.push('', 'Please confirm the delivery and final pricing via WhatsApp.');
 
@@ -727,6 +875,7 @@ function bindSizingEvents() {
   document.getElementById('backToStep2')?.addEventListener('click', handleBackToStep2);
   document.getElementById('submitCustomOrder')?.addEventListener('click', handleSubmitCustomOrder);
   document.getElementById('confirmCustomOrder')?.addEventListener('click', handleConfirmCustomOrder);
+  document.getElementById('referencePhoto')?.addEventListener('change', handleReferencePhotoChange);
 }
 
 function initPageInteractions() {
