@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mensah | Collections</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Unbounded:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-page="shop">
+  <div class="page-shell">
+    <header class="site-header">
+      <div class="brand-mark">
+        <a href="index.html"><img src="image.png" alt="Mensah logo" class="logo-image" /></a>
+      </div>
+      <nav class="site-nav">
+        <a href="index.html">Home</a>
+        <a href="shop.html">Collections</a>
+        <a href="#bespoke">Bespoke</a>
+        <a href="cart.html" class="nav-cta">Cart <span class="cart-count">0</span></a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="section-block page-intro">
+        <div class="section-label">Collections</div>
+        <h1>Discover the Mensah edit.</h1>
+        <p>Filter, sort and explore every luxury piece in our current collection. Choose standard sizing or request a custom fit directly through WhatsApp.</p>
+      </section>
+
+      <section class="filter-bar" aria-label="Product filters">
+        <div class="filter-group">
+          <label for="categorySelect">Category</label>
+          <select id="categorySelect"></select>
+        </div>
+        <div class="filter-group">
+          <label for="sizeSelect">Size</label>
+          <select id="sizeSelect"></select>
+        </div>
+        <div class="filter-group">
+          <label for="priceSelect">Price range</label>
+          <select id="priceSelect"></select>
+        </div>
+        <div class="filter-group">
+          <label for="sortSelect">Sort by</label>
+          <select id="sortSelect">
+            <option value="newest">Newest</option>
+            <option value="price-asc">Price low–high</option>
+            <option value="price-desc">Price high–low</option>
+          </select>
+        </div>
+      </section>
+
+      <section class="product-grid" id="shopGrid"></section>
+
+      <section class="section-block brand-panel" id="bespoke">
+        <div class="brand-copy">
+          <p class="section-label">Bespoke</p>
+          <h2>Order a custom fit directly through WhatsApp.</h2>
+          <p>Submit your measurements and fit preferences, then continue the trusted Mensah tailoring journey with our stylist team.</p>
+          <a href="#" class="button button-primary" id="bespokeStart">Start Custom Order</a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div>
+        <p class="footer-brand">MENSAH</p>
+        <p>Crafted for the Exceptional.</p>
+      </div>
+      <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="shop.html">Collections</a>
+        <a href="https://instagram.com/mensahbrand" target="_blank" rel="noreferrer">Instagram</a>
+        <a href="https://www.google.com/maps/search/?api=1&query=Mensah+Tailoring" target="_blank" rel="noreferrer">Find us</a>
+      </div>
+    </footer>
+  </div>
+
+  <div class="modal" id="productModal" aria-hidden="true">
+    <div class="modal-panel">
+      <button class="modal-close" id="closeModal" aria-label="Close product detail">×</button>
+      <div class="modal-grid">
+        <div class="modal-image-panel">
+          <img id="modalImage" src="" alt="Product image" />
+          <div class="image-thumbs" id="modalThumbs"></div>
+        </div>
+        <div class="modal-details">
+          <p class="section-label" id="modalCategory">Ready-to-Wear</p>
+          <h2 id="modalTitle"></h2>
+          <p class="modal-price" id="modalPrice"></p>
+          <p class="modal-copy" id="modalCopy"></p>
+          <p class="stock-status" id="modalStock"></p>
+
+          <div class="form-group">
+            <label for="productSizeSelect">Size</label>
+            <select id="productSizeSelect"></select>
+          </div>
+
+          <div class="button-row">
+            <button class="button button-primary" id="addToCartBtn">Add to Cart</button>
+            <button class="button button-secondary" id="orderCustomBtn">Order Custom Size</button>
+          </div>
+
+          <div class="sizing-flow hidden" id="sizingFlow">
+            <div class="sizing-step" id="sizingStep1">
+              <h3>Step 1 — Measurements</h3>
+              <div class="form-grid">
+                <div class="form-group"><label for="measureChest">Chest (cm)</label><input id="measureChest" type="number" min="0" /></div>
+                <div class="form-group"><label for="measureWaist">Waist (cm)</label><input id="measureWaist" type="number" min="0" /></div>
+                <div class="form-group"><label for="measureHips">Hips (cm)</label><input id="measureHips" type="number" min="0" /></div>
+                <div class="form-group"><label for="measureShoulder">Shoulder Width (cm)</label><input id="measureShoulder" type="number" min="0" /></div>
+                <div class="form-group"><label for="measureSleeve">Sleeve Length (cm)</label><input id="measureSleeve" type="number" min="0" /></div>
+                <div class="form-group"><label for="measureInseam">Inseam (cm)</label><input id="measureInseam" type="number" min="0" /></div>
+                <div class="form-group"><label for="measureHeight">Height (cm)</label><input id="measureHeight" type="number" min="0" /></div>
+                <div class="form-group"><label for="measureWeight">Weight (kg)</label><input id="measureWeight" type="number" min="0" /></div>
+                <div class="form-group full-width"><label for="measureNotes">Special Notes</label><textarea id="measureNotes" rows="3" placeholder="Relaxed fit, longer hem, roomier chest"></textarea></div>
+              </div>
+              <div class="button-row"><button class="button button-primary" id="toStep2">Continue</button></div>
+            </div>
+
+            <div class="sizing-step hidden" id="sizingStep2">
+              <h3>Step 2 — Fit Preferences</h3>
+              <div class="form-group"><label for="fitStyle">Fit style</label><select id="fitStyle"><option value="Slim">Slim</option><option value="Regular">Regular</option><option value="Relaxed">Relaxed</option></select></div>
+              <div class="form-group"><label for="fabricPreference">Fabric preference</label><input id="fabricPreference" type="text" placeholder="Light wool, heavy cotton, linen" /></div>
+              <div class="form-group full-width"><label for="referencePhoto">Optional reference photo</label><input id="referencePhoto" type="file" accept="image/*" /></div>
+              <div class="button-row">
+                <button class="button button-secondary" id="backToStep1">Back</button>
+                <button class="button button-primary" id="toStep3">Review Order</button>
+              </div>
+            </div>
+
+            <div class="sizing-step hidden" id="sizingStep3">
+              <h3>Step 3 — Order Review</h3>
+              <div class="review-summary" id="orderSummary"></div>
+              <p class="form-note">Pricing fee confirmed via WhatsApp after review with our tailoring team.</p>
+              <div class="button-row">
+                <button class="button button-secondary" id="backToStep2">Back</button>
+                <button class="button button-primary" id="submitCustomOrder">Submit Custom Order via WhatsApp</button>
+              </div>
+            </div>
+
+            <div class="sizing-step hidden" id="sizingStep4">
+              <h3>Step 4 — WhatsApp Handoff</h3>
+              <p>Your request has been compiled. Tap the button below to continue with Mensah on WhatsApp.</p>
+              <div class="button-row"><button class="button button-primary" id="confirmCustomOrder">Continue to WhatsApp</button></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <a class="whatsapp-float" id="floatingWhatsapp" href="#" target="_blank" rel="noreferrer" aria-label="Chat on WhatsApp">💬</a>
+  <script src="script.js"></script>
+</body>
+</html>

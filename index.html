@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mensah | Crafted for the Exceptional</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Unbounded:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-page="home">
+  <div class="page-shell">
+    <header class="site-header">
+      <div class="brand-mark">
+        <a href="index.html"><img src="image.png" alt="Mensah logo" class="logo-image" /></a>
+      </div>
+      <nav class="site-nav">
+        <a href="index.html">Home</a>
+        <a href="shop.html">Collections</a>
+        <a href="#bespoke">Bespoke</a>
+        <a href="cart.html" class="nav-cta">Cart <span class="cart-count">0</span></a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero-panel">
+        <div class="hero-copy">
+          <span class="eyebrow">NEW ARRIVALS</span>
+          <h1>Tailoring that moves with quiet confidence.</h1>
+          <p>Mensah blends precision cut tailoring with modern luxury for the discerning gentleman. Discover our curated ready-to-wear collection or design your own bespoke fit.</p>
+          <div class="hero-actions">
+            <a href="shop.html" class="button button-primary">Shop the Collection</a>
+            <a href="#bespoke" class="button button-secondary">Custom Sizing</a>
+          </div>
+        </div>
+        <div class="hero-visual">
+          <div class="hero-card">
+            <img src="image.png" alt="Mensah wordmark" class="hero-logo" />
+            <div class="hero-stat">
+              <span>Minimal, tailored silhouettes</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="collections" class="section-block">
+        <div class="section-intro">
+          <p class="section-label">Featured</p>
+          <h2>Signature pieces built to last.</h2>
+          <p>Explore our most refined shapes, crafted in natural fibres with precision finishes and thoughtful details.</p>
+        </div>
+
+        <div class="product-grid" id="productGrid"></div>
+      </section>
+
+      <section id="campaignBanner" class="campaign-strip">
+        <div class="campaign-copy">
+          <p class="section-label">Campaign</p>
+          <h2 id="campaignTitle">Loading campaign story...</h2>
+          <p id="campaignCopy">Please wait while we fetch the latest offer.</p>
+          <a href="shop.html" class="button button-primary">Shop this look</a>
+        </div>
+        <div class="campaign-visual" id="campaignVisual"></div>
+      </section>
+
+      <section id="story" class="section-block brand-panel">
+        <div class="brand-copy">
+          <p class="section-label">Brand Story</p>
+          <h2>Designed with restraint, executed with care.</h2>
+          <p>Mensah creates quiet luxury for the man who values precision, texture, and timeless confidence.</p>
+          <a href="#contact" class="button button-secondary">Book a Consultation</a>
+        </div>
+        <div class="brand-highlights">
+          <article>
+            <span>Obsidian</span>
+            <p>Deep tonal foundations for every season.</p>
+          </article>
+          <article>
+            <span>Ivory</span>
+            <p>Soft natural textures that soften the look.</p>
+          </article>
+          <article>
+            <span>Gold</span>
+            <p>Accent details that signal refined taste.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="bespoke" class="section-block split-panel bespoke-panel">
+        <div class="split-copy">
+          <p class="section-label">Bespoke</p>
+          <h2>Custom sizing, delivered through WhatsApp.</h2>
+          <p>Complete your measurements and receive a personal consultation from the Mensah tailoring team.</p>
+        </div>
+        <div class="split-form">
+          <form id="bespokeForm" class="bespoke-form">
+            <div class="form-row">
+              <div class="form-group"><label for="name">Full Name</label><input id="name" name="name" type="text" placeholder="Your full name" required /></div>
+              <div class="form-group"><label for="phone">Phone</label><input id="phone" name="phone" type="tel" placeholder="e.g. +233 24 000 0000" required /></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label for="fit">Preferred fit</label><select id="fit" name="fit" required><option value="">Select fit</option><option value="Slim">Slim</option><option value="Regular">Regular</option><option value="Relaxed">Relaxed</option></select></div>
+              <div class="form-group"><label for="notes">Style Notes</label><input id="notes" name="notes" type="text" placeholder="Optional design notes" /></div>
+            </div>
+            <button type="submit" class="button button-primary">Send to WhatsApp</button>
+            <p class="form-note">We will message you with the next steps and final order confirmation.</p>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer" id="contact">
+      <div>
+        <p class="footer-brand">MENSAH</p>
+        <p>Crafted for the Exceptional.</p>
+      </div>
+      <div class="footer-links">
+        <a href="shop.html">Collections</a>
+        <a href="shop.html#bespoke">Bespoke</a>
+        <a href="https://instagram.com/mensahbrand" target="_blank" rel="noreferrer">Instagram</a>
+        <a href="https://www.google.com/maps/search/?api=1&query=Mensah+Tailoring" target="_blank" rel="noreferrer">Find us</a>
+      </div>
+    </footer>
+  </div>
+
+  <a class="whatsapp-float" id="floatingWhatsapp" href="#" target="_blank" rel="noreferrer" aria-label="Chat on WhatsApp">💬</a>
+  <script src="script.js"></script>
+</body>
+</html>

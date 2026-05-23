@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mensah | Cart</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Unbounded:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-page="cart">
+  <div class="page-shell">
+    <header class="site-header">
+      <div class="brand-mark">
+        <a href="index.html"><img src="image.png" alt="Mensah logo" class="logo-image" /></a>
+      </div>
+      <nav class="site-nav">
+        <a href="index.html">Home</a>
+        <a href="shop.html">Collections</a>
+        <a href="#checkout">Checkout</a>
+        <a href="cart.html" class="nav-cta">Cart <span class="cart-count">0</span></a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="section-block page-intro">
+        <div class="section-label">Cart</div>
+        <h1>Your order summary.</h1>
+        <p>Review your selected pieces, update quantities, and complete checkout with a tailored WhatsApp confirmation.</p>
+      </section>
+
+      <section class="cart-summary" id="cartSummary"></section>
+
+      <section class="checkout-panel" id="checkout">
+        <h2>Checkout</h2>
+        <form id="checkoutForm" class="checkout-form">
+          <div class="form-grid">
+            <div class="form-group"><label for="customerName">Full Name</label><input id="customerName" type="text" placeholder="Your full name" required /></div>
+            <div class="form-group"><label for="customerPhone">Phone Number</label><input id="customerPhone" type="tel" placeholder="e.g. +233 24 000 0000" required /></div>
+            <div class="form-group full-width"><label for="customerAddress">Delivery Address</label><textarea id="customerAddress" rows="3" placeholder="Street address, city, region" required></textarea></div>
+            <div class="form-group full-width"><label for="customerNote">Order notes</label><textarea id="customerNote" rows="2" placeholder="Optional instructions or measurements"></textarea></div>
+          </div>
+          <div class="checkout-footer">
+            <div class="checkout-breakdown">
+              <p>Subtotal <span id="checkoutSubtotal">0</span></p>
+              <p class="muted-text">Delivery details will be confirmed via WhatsApp.</p>
+            </div>
+            <button type="submit" class="button button-primary">Complete Order via WhatsApp</button>
+          </div>
+        </form>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div>
+        <p class="footer-brand">MENSAH</p>
+        <p>Crafted for the Exceptional.</p>
+      </div>
+      <div class="footer-links">
+        <a href="index.html">Home</a>
+        <a href="shop.html">Collections</a>
+        <a href="https://instagram.com/mensahbrand" target="_blank" rel="noreferrer">Instagram</a>
+        <a href="https://www.google.com/maps/search/?api=1&query=Mensah+Tailoring" target="_blank" rel="noreferrer">Find us</a>
+      </div>
+    </footer>
+  </div>
+
+  <a class="whatsapp-float" id="floatingWhatsapp" href="#" target="_blank" rel="noreferrer" aria-label="Chat on WhatsApp">💬</a>
+  <script src="script.js"></script>
+</body>
+</html>
