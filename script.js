@@ -1,6 +1,6 @@
 const API_BASE = 'https://api-hackathon.codedematrixtech.com';
 const MERCHANT_SLUG = 'mensah';
-const DEFAULT_WHATSAPP_NUMBER = '1234567890';
+const DEFAULT_WHATSAPP_NUMBER = '0264454344';
 const IMAGE_BASE = API_BASE;
 let allItems = [];
 let selectedProduct = null;
